@@ -102,7 +102,7 @@ export type GlobalWebhook = {
   ENABLED: boolean;
   WEBHOOK_BY_EVENTS: boolean;
 };
-export type SslConf = { PRIVKEY: string; FULLCHAIN: string };
+//export type SslConf = { PRIVKEY: string; FULLCHAIN: string };
 export type Webhook = { GLOBAL?: GlobalWebhook; EVENTS: EventsWebhook };
 export type ConfigSessionPhone = { CLIENT: string; NAME: string };
 export type QrCode = { LIMIT: number };
@@ -111,7 +111,7 @@ export type Production = boolean;
 export interface Env {
   SERVER: HttpServer;
   CORS: Cors;
-  SSL_CONF: SslConf;
+  //SSL_CONF: SslConf;
   STORE: StoreConf;
   CLEAN_STORE: CleanStoreConf;
   DATABASE: Database;
