@@ -1,9 +1,6 @@
 import { Express } from 'express';
-import { readFileSync } from 'fs';
 import * as http from 'http';
 import * as https from 'https';
-
-//import { configService, SslConf } from '../config/env.config';
 
 export class ServerUP {
   static #app: Express;
@@ -13,14 +10,7 @@ export class ServerUP {
   }
 
   static get https() {
-    //const { FULLCHAIN, PRIVKEY } = configService.get<SslConf>('SSL_CONF');
-    return https.createServer(
-      {
-        cert: process.env.SSL_PRIVKEY,//readFileSync(FULLCHAIN),
-        key: process.env.SSL_FULLCHAIN//readFileSync(PRIVKEY),
-      },
-      ServerUP.#app,
-    );
+    return https.createServer(ServerUP.#app);
   }
 
   static get http() {

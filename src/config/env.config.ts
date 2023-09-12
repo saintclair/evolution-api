@@ -163,10 +163,10 @@ export class ConfigService {
         METHODS: process.env.CORS_METHODS.split(',') as HttpMethods[],
         CREDENTIALS: process.env?.CORS_CREDENTIALS === 'true',
       },
-      SSL_CONF: {
-        PRIVKEY: process.env?.SSL_CONF_PRIVKEY,
-        FULLCHAIN: process.env?.SSL_CONF_FULLCHAIN,
-      },
+      // SSL_CONF: {
+      //   PRIVKEY: process.env?.SSL_CONF_PRIVKEY,
+      //   FULLCHAIN: process.env?.SSL_CONF_FULLCHAIN,
+      // },
       STORE: {
         MESSAGES: process.env?.STORE_MESSAGES === 'true',
         MESSAGE_UP: process.env?.STORE_MESSAGE_UP === 'true',
