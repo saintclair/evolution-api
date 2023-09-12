@@ -4,8 +4,7 @@
   "description": "Rest api for communication with WhatsApp",
   "main": "./dist/src/main.js",
   "scripts": {
-    "build": "tsc",
-    "prestart": "yarn install pm2",
+    "build": "tsc && node src",
     "start": "ts-node --files --transpile-only ./src/main.ts",
     "start:prod": "bash start.sh",
     "dev:server": "clear && tsnd --files --transpile-only --respawn --ignore-watch node_modules ./src/main.ts",
