@@ -5,7 +5,7 @@
   "main": "./dist/src/main.js",
   "scripts": {
     "build": "tsc",
-    "prestart": "yarn install -g pm2",
+    "prestart": "yarn install pm2",
     "start": "ts-node --files --transpile-only ./src/main.ts",
     "start:prod": "bash start.sh",
     "dev:server": "clear && tsnd --files --transpile-only --respawn --ignore-watch node_modules ./src/main.ts",
