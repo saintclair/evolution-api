@@ -17,7 +17,7 @@ function initWA() {
   waMonitor.loadInstance();
 }
 
-export default function handler() {
+function bootstrap() {
   const logger = new Logger('SERVER');
   const app = express();
 
@@ -80,10 +80,10 @@ export default function handler() {
   const server = ServerUP[httpServer.TYPE];
 
   server.listen(httpServer.PORT, () => logger.log(httpServer.TYPE.toUpperCase() + ' - ON: ' + httpServer.PORT));
-
+  
   initWA();
 
   onUnexpectedError();
 }
 
-//bootstrap();
+bootstrap();
