@@ -17,7 +17,7 @@ function initWA() {
   waMonitor.loadInstance();
 }
 
-function bootstrap() {
+export default function bootstrap() {
   const logger = new Logger('SERVER');
   const app = express();
 
@@ -86,4 +86,4 @@ function bootstrap() {
   onUnexpectedError();
 }
 
-bootstrap();
+//bootstrap();
