@@ -17,7 +17,7 @@ function initWA() {
   waMonitor.loadInstance();
 }
 
-export default function bootstrap() {
+export default function handler() {
   const logger = new Logger('SERVER');
   const app = express();
 
