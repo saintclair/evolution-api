@@ -79,7 +79,7 @@ app.use(
 
 app.listen(443, () => {
   console.log("Running on port 443.");
-  initWA();
+  //initWA();
   onUnexpectedError();
 });
 
