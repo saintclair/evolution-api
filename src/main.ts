@@ -13,77 +13,89 @@ import { ServerUP } from './utils/server-up';
 import { HttpStatus, router } from './whatsapp/routers/index.router';
 import { waMonitor } from './whatsapp/whatsapp.module';
 
+import { Express } from 'express';
+
+
 function initWA() {
   waMonitor.loadInstance();
 }
 
-function bootstrap() {
-  const logger = new Logger('SERVER');
-  const app = express();
+// function bootstrap() {
+  // const logger = new Logger('SERVER');
+const app = express();
 
-  app.use(
-    cors({
-      origin(requestOrigin, callback) {
-        const { ORIGIN } = configService.get<Cors>('CORS');
-        !requestOrigin ? (requestOrigin = '*') : undefined;
-        if (ORIGIN.indexOf(requestOrigin) !== -1) {
-          return callback(null, true);
-        }
-        return callback(new Error('Not allowed by CORS'));
-      },
-      methods: [...configService.get<Cors>('CORS').METHODS],
-      credentials: configService.get<Cors>('CORS').CREDENTIALS,
-    }),
-    urlencoded({ extended: true, limit: '136mb' }),
-    json({ limit: '136mb' }),
-    compression(),
-  );
-
-  app.set('view engine', 'hbs');
-  app.set('views', join(ROOT_DIR, 'views'));
-  app.use(express.static(join(ROOT_DIR, 'public')));
-
-  app.use('/', router);
-
-  app.use(
-    (err: Error, req: Request, res: Response, next: NextFunction) => {
-      if (err) {
-        return res.status(err['status'] || 500).json({
-          status: err['status'] || 500,
-          error: err['error'] || 'Internal Server Error',
-          response: {
-            message: err['message'] || 'Internal Server Error',
-          },
-        });
+app.use(
+  cors({
+    origin(requestOrigin, callback) {
+      const { ORIGIN } = configService.get<Cors>('CORS');
+      !requestOrigin ? (requestOrigin = '*') : undefined;
+      if (ORIGIN.indexOf(requestOrigin) !== -1) {
+        return callback(null, true);
       }
-
-      next();
+      return callback(new Error('Not allowed by CORS'));
     },
-    (req: Request, res: Response, next: NextFunction) => {
-      const { method, url } = req;
+    methods: [...configService.get<Cors>('CORS').METHODS],
+    credentials: configService.get<Cors>('CORS').CREDENTIALS,
+  }),
+  urlencoded({ extended: true, limit: '136mb' }),
+  json({ limit: '136mb' }),
+  compression(),
+);
 
-      res.status(HttpStatus.NOT_FOUND).json({
-        status: HttpStatus.NOT_FOUND,
-        error: 'Not Found',
+app.set('view engine', 'hbs');
+app.set('views', join(ROOT_DIR, 'views'));
+app.use(express.static(join(ROOT_DIR, 'public')));
+
+app.use('/', router);
+
+app.use(
+  (err: Error, req: Request, res: Response, next: NextFunction) => {
+    if (err) {
+      return res.status(err['status'] || 500).json({
+        status: err['status'] || 500,
+        error: err['error'] || 'Internal Server Error',
         response: {
-          message: [`Cannot ${method.toUpperCase()} ${url}`],
+          message: err['message'] || 'Internal Server Error',
         },
       });
+    }
 
-      next();
-    },
-  );
+    next();
+  },
+  (req: Request, res: Response, next: NextFunction) => {
+    const { method, url } = req;
 
-  const httpServer = configService.get<HttpServer>('SERVER');
+    res.status(HttpStatus.NOT_FOUND).json({
+      status: HttpStatus.NOT_FOUND,
+      error: 'Not Found',
+      response: {
+        message: [`Cannot ${method.toUpperCase()} ${url}`],
+      },
+    });
 
-  ServerUP.app = app;
-  const server = ServerUP[httpServer.TYPE];
+    next();
+  },
+);
 
-  server.listen(httpServer.PORT, () => logger.log(httpServer.TYPE.toUpperCase() + ' - ON: ' + httpServer.PORT));
-  
+app.listen(443, () => {
+  console.log("Running on port 443.");
   initWA();
-
   onUnexpectedError();
-}
+});
 
-bootstrap();
+// Export the Express API
+module.exports = app;
+
+  // const httpServer = configService.get<HttpServer>('SERVER');
+
+  // ServerUP.app = app;
+  // const server = ServerUP[httpServer.TYPE];
+
+  // server.listen(httpServer.PORT, () => logger.log(httpServer.TYPE.toUpperCase() + ' - ON: ' + httpServer.PORT));
+  
+  //initWA();
+
+  //onUnexpectedError();
+//}
+
+// bootstrap();
